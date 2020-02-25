@@ -1,0 +1,22 @@
+.main-container {
+  padding: 16px;
+}
+
+.header-cls {
+  font-size: '24px';
+  font-weight: bold;
+  padding: 0 0 16px 0;
+}
+
+.paper-container,
+.stepper-container {
+  width: '100%';
+}
+
+.table-container {
+  max-height: 460px;
+}
+
+.step-label-cursor {
+  cursor: pointer;
+}
