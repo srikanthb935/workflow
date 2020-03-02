@@ -1,0 +1,76 @@
+.stepper-container {
+  width: '100%';
+}
+
+.row-stepper .MuiTableCell-sizeSmall:last-child {
+  padding: 0 !important;
+}
+
+.row-data .MuiTableCell-root {
+  border: none !important;
+}
+
+.MuiStepIcon-completed {
+  color: #5e9331 !important;
+}
+
+.MuiStepConnector-completed .MuiStepConnector-lineHorizontal {
+  background-color: #5e9331 !important;
+}
+
+.MuiStepIcon-active {
+  color: #ffa500 !important;
+}
+
+.MuiStepConnector-active .MuiStepConnector-lineHorizontal {
+  background-color: #ffa500 !important;
+}
+
+.Mui-disabled .MuiStepIcon-root{
+    color: rgba(24, 204, 224, 0.349) !important;
+}
+
+.Mui-disabled .MuiStepConnector-lineHorizontal {
+  border: none !important;
+  background-color: rgba(24, 204, 224, 0.349) !important;
+}
+
+.MuiStepConnector-lineHorizontal {
+  height: 8px;
+  display: block;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
+.multi-gray {
+  background-color: rgba(27, 208, 228, 0.151) !important;
+}
+
+.multi-yellow {
+  background-color: #ffa60023 !important;
+}
+
+.multi-green {
+  background-color: #5f933127 !important;
+}
+
+.gray .MuiPaper-root {
+  background-color: rgba(27, 208, 228, 0.151) !important;
+}
+
+.yellow .MuiPaper-root {
+  background-color: #ffa60023 !important;
+}
+
+.green .MuiPaper-root {
+  background-color: #5f933127 !important;
+}

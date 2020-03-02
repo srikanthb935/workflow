@@ -18,12 +18,13 @@ import StepLabel from '@material-ui/core/StepLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import { gridColumnData, gridRowData } from './grid-data';
+import { gridColumnData, gridRowData } from './../grid/grid-data';
 
-import './style.css';
+import './styles.css';
 
-class DataGrid extends Component {
+class ProgressWorkflow extends Component {
   constructor() {
     super();
     this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '' };
@@ -47,14 +48,35 @@ class DataGrid extends Component {
     }
   };
 
-  handleClickOpen = event => {
+  getActiveStep = statusCode => {
+    let Status = {
+      CREATED: 1,
+      'IN-PROGRESS': 2,
+      COMPLETED: 3
+    };
+    return Status[statusCode.toUpperCase()];
+  };
+
+  getStatusClassName(code, isMultiColumn) {
+    switch (code) {
+      case 'Created':
+        return isMultiColumn ? 'multi-gray' : 'gray';
+        break;
+      case 'In-Progress':
+        return isMultiColumn ? 'multi-yellow' : 'yellow';
+        break;
+      case 'Completed':
+        return isMultiColumn ? 'multi-green' : 'green';
+        break;
+      default:
+        return isMultiColumn ? 'multi-none' : 'none';
+        break;
+    }
+  }
+
+  onStepClick = event => {
     if (event.target.innerText) {
-      let Status = {
-        CREATED: 1,
-        'IN-PROGRESS': 2,
-        COMPLETED: 3
-      };
-      this.setState({ activeStep: Status[event.target.innerText] });
+      this.setState({ stepName: event.target.innerText });
       setTimeout(() => {
         this.setState({ open: true });
       });
@@ -70,10 +92,6 @@ class DataGrid extends Component {
     return this.state.skipped.has(step);
   };
 
-  onStepClick = event => {
-    this.setState({ stepName: event.target.innerText });
-  };
-
   render() {
     return (
       <div className="main-container">
@@ -84,11 +102,15 @@ class DataGrid extends Component {
               <Table stickyHeader size="small">
                 <TableHead>
                   <TableRow>
-                    {gridColumnData.map(column => (
-                      <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                        {column.label}
-                      </TableCell>
-                    ))}
+                    {gridColumnData.map(column => {
+                      if (column.id !== 'ticketStatus') {
+                        return (
+                          <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                            {column.label}
+                          </TableCell>
+                        );
+                      }
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -97,30 +119,58 @@ class DataGrid extends Component {
                       this.state.page * this.state.rowsPerPage,
                       this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
                     )
-                    .map(row => {
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    .map(row => (
+                      <React.Fragment>
+                        <TableRow role="checkbox" tabIndex={-1} key={row.code} className="row-data">
                           {gridColumnData.map(column => {
                             const value = row[column.id];
-                            if (column.id === 'ticketStatus') {
+                            if (column.id !== 'ticketStatus') {
                               return (
-                                <TableCell key={column.id} align={column.align}>
-                                  <Button color="primary" onClick={this.handleClickOpen}>
-                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                  </Button>
-                                </TableCell>
-                              );
-                            } else {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
+                                <TableCell
+                                  key={column.id}
+                                  align={column.align}
+                                  className={this.getStatusClassName(row['ticketStatus'], true)}
+                                >
                                   {column.format && typeof value === 'number' ? column.format(value) : value}
                                 </TableCell>
                               );
                             }
                           })}
                         </TableRow>
-                      );
-                    })}
+                        <TableRow role="checkbox" tabIndex={-1} key={row.code} className="row-stepper">
+                          {gridColumnData.map(column => {
+                            if (column.id === 'ticketStatus') {
+                              return (
+                                <TableCell colSpan="8" className={this.getStatusClassName(row[column.id], false)}>
+                                  <div className="stepper-container">
+                                    <Stepper activeStep={this.getActiveStep(row[column.id])}>
+                                      {this.steps.map((label, index) => {
+                                        const stepProps = {};
+                                        const labelProps = {};
+                                        if (this.isStepSkipped(index)) {
+                                          stepProps.completed = false;
+                                        }
+                                        return (
+                                          <Step key={label} {...stepProps}>
+                                            <StepLabel
+                                              {...labelProps}
+                                              onClick={this.onStepClick}
+                                              className="step-label-cursor"
+                                            >
+                                              {label}
+                                            </StepLabel>
+                                          </Step>
+                                        );
+                                      })}
+                                    </Stepper>
+                                  </div>
+                                </TableCell>
+                              );
+                            }
+                          })}
+                        </TableRow>
+                      </React.Fragment>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -141,24 +191,6 @@ class DataGrid extends Component {
               Ticket Status
             </DialogTitle>
             <DialogContent dividers>
-              <div className="stepper-container">
-                <Stepper activeStep={this.state.activeStep}>
-                  {this.steps.map((label, index) => {
-                    const stepProps = {};
-                    const labelProps = {};
-                    if (this.isStepSkipped(index)) {
-                      stepProps.completed = false;
-                    }
-                    return (
-                      <Step key={label} {...stepProps}>
-                        <StepLabel {...labelProps} onClick={this.onStepClick} className="step-label-cursor">
-                          {label}
-                        </StepLabel>
-                      </Step>
-                    );
-                  })}
-                </Stepper>
-              </div>
               <div>
                 {this.state.stepName === 'Created' && (
                   <List>
@@ -213,4 +245,4 @@ class DataGrid extends Component {
   }
 }
 
-export default DataGrid;
+export default ProgressWorkflow;

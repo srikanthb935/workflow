@@ -2,15 +2,19 @@
   padding: 16px;
 }
 
+.MuiTableCell-head {
+  font-weight: bold !important;
+}
+
 .header-cls {
-  font-size: '24px';
+  font-size: 24px;
   font-weight: bold;
   padding: 0 0 16px 0;
 }
 
 .paper-container,
 .stepper-container {
-  width: '100%';
+  width: 100%;
 }
 
 .table-container {
@@ -19,4 +23,20 @@
 
 .step-label-cursor {
   cursor: pointer;
+}
+
+.MuiStepIcon-completed {
+  color: #5e9331 !important;
+}
+
+.MuiStepConnector-completed .MuiStepConnector-line {
+  border-color: #5e9331 !important;
+}
+
+.MuiStepIcon-active {
+  color: #ffa500 !important;
+}
+
+.MuiStepConnector-active .MuiStepConnector-line {
+  border-color: #ffa500 !important;
 }
