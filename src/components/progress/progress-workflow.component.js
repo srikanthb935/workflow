@@ -27,7 +27,7 @@ import './styles.css';
 class ProgressWorkflow extends Component {
   constructor() {
     super();
-    this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '' };
+    this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '', listItem: '' };
   }
 
   steps = ['Created', 'In-Progress', 'Completed'];
@@ -57,26 +57,32 @@ class ProgressWorkflow extends Component {
     return Status[statusCode.toUpperCase()];
   };
 
-  getStatusClassName(code, isMultiColumn) {
-    switch (code) {
-      case 'Created':
-        return isMultiColumn ? 'multi-gray' : 'gray';
-        break;
-      case 'In-Progress':
-        return isMultiColumn ? 'multi-yellow' : 'yellow';
-        break;
-      case 'Completed':
-        return isMultiColumn ? 'multi-green' : 'green';
-        break;
-      default:
-        return isMultiColumn ? 'multi-none' : 'none';
-        break;
-    }
+  getStatusClassName(code, isMultiColumn, isFailed) {
+      if (isFailed) {
+        return isMultiColumn ? 'multi-red' : 'red';
+      } else {
+        switch (code) {
+            case 'Created':
+              return isMultiColumn ? 'multi-gray' : 'gray';
+              break;
+            case 'In-Progress':
+              return isMultiColumn ? 'multi-yellow' : 'yellow';
+              break;
+            case 'Completed':
+              return isMultiColumn ? 'multi-green' : 'green';
+              break;
+            default:
+              return isMultiColumn ? 'multi-none' : 'none';
+              break;
+          }
+      }
+    
   }
 
   onStepClick = event => {
     if (event.target.innerText) {
       this.setState({ stepName: event.target.innerText });
+      this.setState({ listItem: event.target.className});
       setTimeout(() => {
         this.setState({ open: true });
       });
@@ -86,6 +92,7 @@ class ProgressWorkflow extends Component {
   handleClose = () => {
     this.setState({ open: false });
     this.setState({ stepName: '' });
+    this.setState({ listItem: ''});
   };
 
   isStepSkipped = step => {
@@ -129,7 +136,7 @@ class ProgressWorkflow extends Component {
                                 <TableCell
                                   key={column.id}
                                   align={column.align}
-                                  className={this.getStatusClassName(row['ticketStatus'], true)}
+                                  className={this.getStatusClassName(row['ticketStatus'], true, row['isFailed'])}
                                 >
                                   {column.format && typeof value === 'number' ? column.format(value) : value}
                                 </TableCell>
@@ -141,8 +148,8 @@ class ProgressWorkflow extends Component {
                           {gridColumnData.map(column => {
                             if (column.id === 'ticketStatus') {
                               return (
-                                <TableCell colSpan="8" className={this.getStatusClassName(row[column.id], false)}>
-                                  <div className="stepper-container">
+                                <TableCell colSpan="8" className={this.getStatusClassName(row[column.id], false, row['isFailed'])}>
+                                  <div className="stepper-container" className={row[column.id] === "Completed" ? "cls-" + this.getActiveStep(row[column.id]) : ''}>
                                     <Stepper activeStep={this.getActiveStep(row[column.id])}>
                                       {this.steps.map((label, index) => {
                                         const stepProps = {};
@@ -151,13 +158,13 @@ class ProgressWorkflow extends Component {
                                           stepProps.completed = false;
                                         }
                                         return (
-                                          <Step key={label} {...stepProps}>
+                                          <Step key={label} {...stepProps}>{label}
                                             <StepLabel
                                               {...labelProps}
                                               onClick={this.onStepClick}
                                               className="step-label-cursor"
                                             >
-                                              {label}
+                                              <span className={!row['isFailed'] ? this.getActiveStep(row[column.id]) : '4'}>{label}</span>
                                             </StepLabel>
                                           </Step>
                                         );
@@ -194,39 +201,39 @@ class ProgressWorkflow extends Component {
               <div>
                 {this.state.stepName === 'Created' && (
                   <List>
-                    <ListItem>
+                    <ListItem className={'Created-' + this.state.listItem}>
                       <ListItemText primary="Create Ticket"></ListItemText>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={'Created-' + this.state.listItem}>
                       <ListItemText primary="Assign User"></ListItemText>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={'Created-' + this.state.listItem}>
                       <ListItemText primary="Add Task"></ListItemText>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={'Created-' + this.state.listItem}>
                       <ListItemText primary="Update Customer"></ListItemText>
                     </ListItem>
                   </List>
                 )}
                 {this.state.stepName === 'In-Progress' && (
                   <List>
-                    <ListItem>
+                    <ListItem className={'In-Progress-' + this.state.listItem}>
                       <ListItemText primary="Modify Ticket"></ListItemText>
                     </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Change Primary Neid"></ListItemText>
+                    <ListItem className={'In-Progress-' + this.state.listItem}>
+                      <ListItemText primary="Change Primary Neid" ></ListItemText>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={'In-Progress-' + this.state.listItem}>
                       <ListItemText primary="Start Work"></ListItemText>
                     </ListItem>
-                    <ListItem>
+                    <ListItem className={'In-Progress-' + this.state.listItem}> 
                       <ListItemText primary="Stop Work"></ListItemText>
                     </ListItem>
                   </List>
                 )}
                 {this.state.stepName === 'Completed' && (
                   <List>
-                    <ListItem>
+                    <ListItem className={'Completed-' + this.state.listItem}>
                       <ListItemText primary="Completed"></ListItemText>
                     </ListItem>
                   </List>

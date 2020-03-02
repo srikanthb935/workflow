@@ -22,12 +22,20 @@
   color: #ffa500 !important;
 }
 
+.red .MuiStepIcon-active {
+  color: rgba(202, 16, 9, 0.493) !important;
+}
+
 .MuiStepConnector-active .MuiStepConnector-lineHorizontal {
   background-color: #ffa500 !important;
 }
 
-.Mui-disabled .MuiStepIcon-root{
-    color: rgba(24, 204, 224, 0.349) !important;
+.red .MuiStepConnector-active .MuiStepConnector-lineHorizontal {
+  background-color: rgba(202, 16, 9, 0.493) !important;
+}
+
+.Mui-disabled .MuiStepIcon-root {
+  color: rgba(24, 204, 224, 0.349) !important;
 }
 
 .Mui-disabled .MuiStepConnector-lineHorizontal {
@@ -63,6 +71,10 @@
   background-color: #5f933127 !important;
 }
 
+.multi-red {
+  background-color: rgba(202, 16, 9, 0.226) !important;
+}
+
 .gray .MuiPaper-root {
   background-color: rgba(27, 208, 228, 0.151) !important;
 }
@@ -73,4 +85,43 @@
 
 .green .MuiPaper-root {
   background-color: #5f933127 !important;
+}
+
+.red .MuiPaper-root {
+  background-color: rgba(202, 16, 9, 0.226) !important;
+}
+
+.Created-1 .MuiListItemText-root,
+.Created-2 .MuiListItemText-root,
+.Created-3 .MuiListItemText-root,
+.Created-4 .MuiListItemText-root,
+.In-Progress-2 .MuiListItemText-root,
+.In-Progress-3 .MuiListItemText-root,
+.In-Progress-4 .MuiListItemText-root,
+.Completed-3 .MuiListItemText-root {
+  background-color: #5c902fe0 !important;
+  padding: 5px;
+  color: #ffffff;
+}
+
+.In-Progress-1 .MuiListItemText-root,
+.Completed-2 .MuiListItemText-root {
+  background-color: #ffa50099 !important;
+  padding: 5px;
+  color: #ffffff;
+}
+
+.Completed-4 .MuiListItemText-root {
+  background-color: #e60b0b88 !important;
+  padding: 5px;
+  color: #ffffff;
+}
+
+.red .cls-3 .MuiStepIcon-completed {
+  color: #e60b0b88 !important;
+}
+
+.red .cls-3 .MuiStepConnector-lineHorizontal {
+  border: none !important;
+  background-color: #e60b0b88 !important;
 }

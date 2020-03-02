@@ -49,7 +49,8 @@ function createData(
   completed,
   createdDate,
   completedDate,
-  ticketStatus
+  ticketStatus,
+  isFailed
 ) {
   return {
     ticketNumber,
@@ -60,7 +61,8 @@ function createData(
     completed,
     createdDate,
     completedDate,
-    ticketStatus
+    ticketStatus,
+    isFailed
   };
 }
 
@@ -74,7 +76,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300154,
@@ -85,7 +88,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'In-Progress'
+    'In-Progress',
+    false
   ),
   createData(
     20199122300156,
@@ -96,7 +100,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    true
   ),
   createData(
     20199122300157,
@@ -107,7 +112,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Created'
+    'Created',
+    false
   ),
   createData(
     20199122300158,
@@ -118,7 +124,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300161,
@@ -129,7 +136,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300168,
@@ -140,7 +148,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'In-Progress'
+    'In-Progress',
+    false
   ),
   createData(
     20199122300153,
@@ -151,7 +160,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300154,
@@ -162,7 +172,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'In-Progress'
+    'In-Progress',
+    false
   ),
   createData(
     20199122300156,
@@ -173,7 +184,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300157,
@@ -184,7 +196,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300158,
@@ -195,7 +208,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300161,
@@ -206,7 +220,8 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'Completed'
+    'Completed',
+    false
   ),
   createData(
     20199122300168,
@@ -217,6 +232,7 @@ export const gridRowData = [
     'Y',
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
-    'In-Progress'
+    'In-Progress',
+    false
   )
 ];
