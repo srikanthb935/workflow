@@ -91,30 +91,46 @@
   background-color: rgba(202, 16, 9, 0.226) !important;
 }
 
-.Created-1 .MuiListItemText-root,
-.Created-2 .MuiListItemText-root,
-.Created-3 .MuiListItemText-root,
-.Created-4 .MuiListItemText-root,
-.In-Progress-2 .MuiListItemText-root,
-.In-Progress-3 .MuiListItemText-root,
-.In-Progress-4 .MuiListItemText-root,
-.Completed-3 .MuiListItemText-root {
+
+.color-1 .MuiListItemText-root {
   background-color: #5c902fe0 !important;
   padding: 5px;
   color: #ffffff;
 }
 
-.In-Progress-1 .MuiListItemText-root,
-.Completed-2 .MuiListItemText-root {
+.color-check-1 .MuiSvgIcon-root {
+  color: #5c902fe0;
+}
+
+.color-2 .MuiListItemText-root {
   background-color: #ffa50099 !important;
   padding: 5px;
   color: #ffffff;
 }
 
-.Completed-4 .MuiListItemText-root {
+.color-check-2 .MuiSvgIcon-root {
+  color: #ffa50099;
+}
+
+.color-4 .MuiListItemText-root {
+  background-color: #524f4f88 !important;
+  padding: 5px;
+  color: #ffffff;
+}
+
+.color-check-4 .MuiSvgIcon-root {
+  color: #524f4f88;
+}
+
+
+.color-3 .MuiListItemText-root {
   background-color: #e60b0b88 !important;
   padding: 5px;
   color: #ffffff;
+}
+
+.color-check-3 .MuiSvgIcon-root {
+  color: #e60b0b88;
 }
 
 .red .cls-3 .MuiStepIcon-completed {

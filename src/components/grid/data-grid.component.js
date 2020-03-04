@@ -26,7 +26,7 @@ import './style.css';
 class DataGrid extends Component {
   constructor() {
     super();
-    this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '' };
+    this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '', rowNum: ''};
   }
 
   steps = ['Created', 'In-Progress', 'Completed'];
@@ -48,13 +48,14 @@ class DataGrid extends Component {
   };
 
   handleClickOpen = event => {
-    if (event.target.innerText) {
+    if (event.target.innerText && event.target.innerText) {
       let Status = {
         CREATED: 1,
         'IN-PROGRESS': 2,
         COMPLETED: 3
       };
       this.setState({ activeStep: Status[event.target.innerText] });
+      this.setState({ rowNum: event.target.className });
       setTimeout(() => {
         this.setState({ open: true });
       });
@@ -97,7 +98,7 @@ class DataGrid extends Component {
                       this.state.page * this.state.rowsPerPage,
                       this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
                     )
-                    .map(row => {
+                    .map((row, rowIndex) => {
                       return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                           {gridColumnData.map(column => {
@@ -105,15 +106,15 @@ class DataGrid extends Component {
                             if (column.id === 'ticketStatus') {
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  <Button color="primary" onClick={this.handleClickOpen}>
-                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                  <Button color="primary" onClick={this.handleClickOpen} >
+                                    <span className={rowIndex}>{column.format && typeof value === 'number' ? column.format(value) : value}</span>
                                   </Button>
                                 </TableCell>
                               );
                             } else {
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  {column.format && typeof value === 'number' ? column.format(value) : value}
+                                  <span className={rowIndex}>{column.format && typeof value === 'number' ? column.format(value) : value}</span>
                                 </TableCell>
                               );
                             }
@@ -152,7 +153,7 @@ class DataGrid extends Component {
                     return (
                       <Step key={label} {...stepProps}>
                         <StepLabel {...labelProps} onClick={this.onStepClick} className="step-label-cursor">
-                          {label}
+                          <span>{label}</span>
                         </StepLabel>
                       </Step>
                     );
@@ -162,41 +163,35 @@ class DataGrid extends Component {
               <div>
                 {this.state.stepName === 'Created' && (
                   <List>
-                    <ListItem>
-                      <ListItemText primary="Create Ticket"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Assign User"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Add Task"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Update Customer"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.created.map((p, index) => {
+                      return (
+                        <ListItem className={'color-' + p.step}>
+                          <ListItemText primary={p.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
                 {this.state.stepName === 'In-Progress' && (
                   <List>
-                    <ListItem>
-                      <ListItemText primary="Modify Ticket"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Change Primary Neid"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Start Work"></ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="Stop Work"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.inProgress.map((q, index) => {
+                      return (
+                        <ListItem className={'color-' + q.step}>
+                          <ListItemText primary={q.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
                 {this.state.stepName === 'Completed' && (
                   <List>
-                    <ListItem>
-                      <ListItemText primary="Completed"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.completed.map((r, index) => {
+                      return (
+                        <ListItem className={'color-' + r.step}>
+                          <ListItemText primary={r.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
               </div>

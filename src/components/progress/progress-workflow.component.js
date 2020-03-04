@@ -18,7 +18,8 @@ import StepLabel from '@material-ui/core/StepLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Tooltip from '@material-ui/core/Tooltip';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import { gridColumnData, gridRowData } from './../grid/grid-data';
 
@@ -27,7 +28,15 @@ import './styles.css';
 class ProgressWorkflow extends Component {
   constructor() {
     super();
-    this.state = { rowsPerPage: 10, page: 0, open: false, activeStep: 1, skipped: new Set(), stepName: '', listItem: '' };
+    this.state = {
+      rowsPerPage: 10,
+      page: 0,
+      open: false,
+      activeStep: 1,
+      skipped: new Set(),
+      stepName: '',
+      rowNum: ''
+    };
   }
 
   steps = ['Created', 'In-Progress', 'Completed'];
@@ -58,31 +67,30 @@ class ProgressWorkflow extends Component {
   };
 
   getStatusClassName(code, isMultiColumn, isFailed) {
-      if (isFailed) {
-        return isMultiColumn ? 'multi-red' : 'red';
-      } else {
-        switch (code) {
-            case 'Created':
-              return isMultiColumn ? 'multi-gray' : 'gray';
-              break;
-            case 'In-Progress':
-              return isMultiColumn ? 'multi-yellow' : 'yellow';
-              break;
-            case 'Completed':
-              return isMultiColumn ? 'multi-green' : 'green';
-              break;
-            default:
-              return isMultiColumn ? 'multi-none' : 'none';
-              break;
-          }
+    if (isFailed) {
+      return isMultiColumn ? 'multi-red' : 'red';
+    } else {
+      switch (code) {
+        case 'Created':
+          return isMultiColumn ? 'multi-gray' : 'gray';
+          break;
+        case 'In-Progress':
+          return isMultiColumn ? 'multi-yellow' : 'yellow';
+          break;
+        case 'Completed':
+          return isMultiColumn ? 'multi-green' : 'green';
+          break;
+        default:
+          return isMultiColumn ? 'multi-none' : 'none';
+          break;
       }
-    
+    }
   }
 
   onStepClick = event => {
-    if (event.target.innerText) {
+    if (event.target.innerText && event.target.className) {
       this.setState({ stepName: event.target.innerText });
-      this.setState({ listItem: event.target.className});
+      this.setState({ rowNum: event.target.className });
       setTimeout(() => {
         this.setState({ open: true });
       });
@@ -92,7 +100,6 @@ class ProgressWorkflow extends Component {
   handleClose = () => {
     this.setState({ open: false });
     this.setState({ stepName: '' });
-    this.setState({ listItem: ''});
   };
 
   isStepSkipped = step => {
@@ -126,7 +133,7 @@ class ProgressWorkflow extends Component {
                       this.state.page * this.state.rowsPerPage,
                       this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
                     )
-                    .map(row => (
+                    .map((row, rowIndex) => (
                       <React.Fragment>
                         <TableRow role="checkbox" tabIndex={-1} key={row.code} className="row-data">
                           {gridColumnData.map(column => {
@@ -148,8 +155,16 @@ class ProgressWorkflow extends Component {
                           {gridColumnData.map(column => {
                             if (column.id === 'ticketStatus') {
                               return (
-                                <TableCell colSpan="8" className={this.getStatusClassName(row[column.id], false, row['isFailed'])}>
-                                  <div className="stepper-container" className={row[column.id] === "Completed" ? "cls-" + this.getActiveStep(row[column.id]) : ''}>
+                                <TableCell
+                                  colSpan="8"
+                                  className={this.getStatusClassName(row[column.id], false, row['isFailed'])}
+                                >
+                                  <div
+                                    className="stepper-container"
+                                    className={
+                                      row[column.id] === 'Completed' ? 'cls-' + this.getActiveStep(row[column.id]) : ''
+                                    }
+                                  >
                                     <Stepper activeStep={this.getActiveStep(row[column.id])}>
                                       {this.steps.map((label, index) => {
                                         const stepProps = {};
@@ -158,13 +173,14 @@ class ProgressWorkflow extends Component {
                                           stepProps.completed = false;
                                         }
                                         return (
-                                          <Step key={label} {...stepProps}>{label}
+                                          <Step key={label} {...stepProps}>
+                                            {label}
                                             <StepLabel
                                               {...labelProps}
                                               onClick={this.onStepClick}
                                               className="step-label-cursor"
                                             >
-                                              <span className={!row['isFailed'] ? this.getActiveStep(row[column.id]) : '4'}>{label}</span>
+                                              <span className={rowIndex}>{label}</span>
                                             </StepLabel>
                                           </Step>
                                         );
@@ -201,41 +217,44 @@ class ProgressWorkflow extends Component {
               <div>
                 {this.state.stepName === 'Created' && (
                   <List>
-                    <ListItem className={'Created-' + this.state.listItem}>
-                      <ListItemText primary="Create Ticket"></ListItemText>
-                    </ListItem>
-                    <ListItem className={'Created-' + this.state.listItem}>
-                      <ListItemText primary="Assign User"></ListItemText>
-                    </ListItem>
-                    <ListItem className={'Created-' + this.state.listItem}>
-                      <ListItemText primary="Add Task"></ListItemText>
-                    </ListItem>
-                    <ListItem className={'Created-' + this.state.listItem}>
-                      <ListItemText primary="Update Customer"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.created.map((p, index) => {
+                      return (
+                        <ListItem className={'color-check-' + p.step}>
+                          <ListItemIcon>
+                            <CheckCircleIcon />
+                          </ListItemIcon>
+                          <ListItemText primary={p.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
                 {this.state.stepName === 'In-Progress' && (
                   <List>
-                    <ListItem className={'In-Progress-' + this.state.listItem}>
-                      <ListItemText primary="Modify Ticket"></ListItemText>
-                    </ListItem>
-                    <ListItem className={'In-Progress-' + this.state.listItem}>
-                      <ListItemText primary="Change Primary Neid" ></ListItemText>
-                    </ListItem>
-                    <ListItem className={'In-Progress-' + this.state.listItem}>
-                      <ListItemText primary="Start Work"></ListItemText>
-                    </ListItem>
-                    <ListItem className={'In-Progress-' + this.state.listItem}> 
-                      <ListItemText primary="Stop Work"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.inProgress.map((q, index) => {
+                      return (
+                        <ListItem className={'color-check-' + q.step}>
+                          <ListItemIcon>
+                            <CheckCircleIcon />
+                          </ListItemIcon>
+                          <ListItemText primary={q.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
                 {this.state.stepName === 'Completed' && (
                   <List>
-                    <ListItem className={'Completed-' + this.state.listItem}>
-                      <ListItemText primary="Completed"></ListItemText>
-                    </ListItem>
+                    {gridRowData[this.state.rowNum].workflow.completed.map((r, index) => {
+                      return (
+                        <ListItem className={'color-check-' + r.step}>
+                          <ListItemIcon>
+                            <CheckCircleIcon />
+                          </ListItemIcon>
+                          <ListItemText primary={r.name}></ListItemText>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 )}
               </div>

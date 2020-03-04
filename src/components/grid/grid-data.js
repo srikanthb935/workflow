@@ -40,6 +40,14 @@ export const gridColumnData = [
   }
 ];
 
+function getWorkflow(a, b, c) {
+  return {
+    created: [{name: 'Create Ticket', step: a[0]}, {name: 'Assign User', step: a[1]}, {name: 'Add Task', step: a[2]}, {name: 'Update Customer', step: a[3]}],
+    inProgress: [{name: 'Modify Ticket', step: b[0]}, {name: 'Change Primary Neid', step: b[1]}, {name: 'Start Work', step: b[2]}, {name: 'Stop Work', step: b[3]}],
+    completed: [{name: 'Approval', step: c[0]}, {name: 'completed', step: c[1]}]
+  };
+}
+
 function createData(
   ticketNumber,
   instanceId,
@@ -50,7 +58,9 @@ function createData(
   createdDate,
   completedDate,
   ticketStatus,
-  isFailed
+  isFailed,
+  workflow,
+  rowNum
 ) {
   return {
     ticketNumber,
@@ -62,10 +72,12 @@ function createData(
     createdDate,
     completedDate,
     ticketStatus,
-    isFailed
+    isFailed,
+    workflow,
+    rowNum
   };
 }
-
+// 1-completed, 2-in progress,3-failed, 4-not started
 export const gridRowData = [
   createData(
     20199122300153,
@@ -77,7 +89,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300154,
@@ -89,7 +102,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'In-Progress',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,2], [4,4])
   ),
   createData(
     20199122300156,
@@ -101,7 +115,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    true
+    true,
+    getWorkflow([1,1,1,1], [1,1,1,1], [3,4])
   ),
   createData(
     20199122300157,
@@ -113,7 +128,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Created',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,2,4,4], [4,4])
   ),
   createData(
     20199122300158,
@@ -125,7 +141,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300161,
@@ -137,7 +154,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300168,
@@ -149,7 +167,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'In-Progress',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [2,4])
   ),
   createData(
     20199122300153,
@@ -161,7 +180,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300154,
@@ -173,7 +193,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'In-Progress',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [2,4])
   ),
   createData(
     20199122300156,
@@ -185,7 +206,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300157,
@@ -197,7 +219,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300158,
@@ -209,7 +232,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300161,
@@ -221,7 +245,8 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'Completed',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,1])
   ),
   createData(
     20199122300168,
@@ -233,6 +258,7 @@ export const gridRowData = [
     '22-DEC-19 02.30pm',
     '23-DEC-19 01.30pm',
     'In-Progress',
-    false
+    false,
+    getWorkflow([1,1,1,1], [1,1,1,1], [1,2])
   )
 ];
